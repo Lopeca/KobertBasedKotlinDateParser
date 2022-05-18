@@ -40,7 +40,7 @@ fun decodeSentence(sentence: MutableList<TaggedWord>): TimeBox {
             decomposedSentence.add(wordSet)
     }
 
-    print("분해 결과 : $decomposedSentence")
+    println("분해 결과 : $decomposedSentence")
     val mark = detectDivideMark(decomposedSentence)
 
     
@@ -49,6 +49,8 @@ fun decodeSentence(sentence: MutableList<TaggedWord>): TimeBox {
 
 fun detectDivideMark(decomposedSentence: MutableList<TaggedWord>):String? {
     var mark: String? = null
+
+    // DT 년월 태그는 나눔표시를 반드시 갖고 있음. 년은 있는데 월은 없다면
     for(tag in Tags.DT_YEAR..Tags.DT_DAY) {
         if(isTagDetected(decomposedSentence,tag))
             mark = decodeDivider(decomposedSentence,tag)
@@ -56,6 +58,32 @@ fun detectDivideMark(decomposedSentence: MutableList<TaggedWord>):String? {
     }
     if (isTagDetected(decomposedSentence,Tags.DT_DIVIDE)){
         val markCollector:MutableList<DivideMarkCounter> = mutableListOf()
+
+        //divide 기호들 수집
+        val it = decomposedSentence.iterator()
+        while(it.hasNext()){
+            val word = it.next()
+            if(word.tag == Tags.DT_DIVIDE){
+                if(markCollector.isEmpty()) markCollector.add(DivideMarkCounter(word.word))
+                else{
+                    val markIterator = markCollector.iterator()
+                    var tagExist = false
+                    while(markIterator.hasNext()){
+                        val divideMark = markIterator.next()
+                        if(word.word == divideMark.mark) {
+                            tagExist = true
+                            divideMark.count++
+                        }
+                    }
+                    if(tagExist) continue
+                    markCollector.add(DivideMarkCounter(word.word))
+                }
+            }
+        }
+        println(markCollector)
+
+        markCollector.sortBy { it.count }
+        markCollector.reverse()
     }
     return mark
 }

@@ -1,1 +1,1 @@
-class DivideMarkCounter (val mark:Char, var count:Int=0)
+data class DivideMarkCounter (val mark:String, var count:Int=1)

@@ -1,40 +1,40 @@
 package sampleCodes
 
 fun main(){
-    val regex1 = Regex(".*(\\d?\\d?\\d\\d)[\\./년]?\\s?(\\d?\\d)[\\./월]\\s?(\\d?\\d)[^-~]?")
+    val ymd = Regex("\\D*(\\d*[\\./년\\s])?\\s?(\\d*[\\./월\\s])?\\s?(\\d+)[^-~]?")
 
-    val sen2 = "2015년 6월2일   2015년 6월3일"
-    val sen3 = "2019. 5. 7&"
-    val sen4 = "2019.10.1.()"
-    val sen5 = "10.1."
+    val sen1 = "2015.9.8.(화)+e"
+    val sen2 = "6월2일   2015년 6월3일"
+    val sen3 = "1월 5일"
+    val sen4 = "     2019.10.1.()"
+    val sen5 = " 2"
 
+    var resYmd = ymd.find(sen1)
+    printDestructured(resYmd)
+    resYmd = ymd.find(sen2)
+    printDestructured(resYmd)
+    resYmd = resYmd?.next()
+    printDestructured(resYmd)
+    resYmd = ymd.find(sen3)
+    printDestructured(resYmd)
+    resYmd = ymd.find(sen4)
+    printDestructured(resYmd)
+    resYmd = ymd.find(sen5)
+    printDestructured(resYmd)
 
+    resYmd = ymd.find(sen4)
+    while(resYmd != null){
+        val(year, month, day) = resYmd.destructured
 
-    println("match(regex2): ${regex1.containsMatchIn(sen2)}")
-    println("match(regex3): ${regex1.containsMatchIn(sen3)}")
-    var res = regex1.find(sen3)
-    if(res != null) println("${res.value} || ${res.range}")
-    println("match(regex4): ${regex1.containsMatchIn(sen4)}")
-    res = regex1.find(sen4)
-    if(res != null) println("${res.value} || ${res.range}")
-    println("match(regex5): ${regex1.containsMatchIn(sen5)}")
+        println(sen4)
+        println("year : $year || month : $month || day : $day")
+        println(resYmd.range)
 
-    val regex = "(.+)/(.+)\\.(.+)".toRegex()
-    val path = "folder1/folder2/folder3/filename.java"
-
-    if (path.matches(regex)){
-        println("match!")
-        val res = regex.matchEntire(path)
-        if (res != null){
-            val (p, n, e) = res.destructured
-            println("res : $res")
-            println("resss : ")
-            println("$p, $n, $e")
-        }
+        resYmd = resYmd.next()
     }
+}
 
-    else println("not match..")
-
-
-
+fun printDestructured(res:MatchResult?){
+    if(res!=null)
+        println(res.destructured.toList())
 }

@@ -126,10 +126,7 @@ fun findDivider(word: String): String? {
     return word.substring(splitIndex,word.length)
 }
 
-fun isTagDT(taggedWord: TaggedWord): Boolean {
-    if(taggedWord.tag in 1..5) return true
-    return false
-}
+
 
 fun decodeDateOthers(wordSet: TaggedWord): MutableList<TaggedWord> {
     val taggedWordStorage:MutableList<TaggedWord> = mutableListOf()

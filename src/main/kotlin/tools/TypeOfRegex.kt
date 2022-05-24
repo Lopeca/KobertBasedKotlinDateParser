@@ -1,3 +1,5 @@
+package tools
+
 class TypeOfRegex {
     companion object{
         const val num = "^\\d+$"
@@ -7,5 +9,6 @@ class TypeOfRegex {
         const val endCommitmentFinder = "내일|모레|글피|어제|그제"
 
         const val dateRegistReverse = ".*\\d?\\d?\\d\\d[./년]\\s?\\d?\\d[./월]\\s?\\d?\\d.*"
+        val extNum = Regex("\\D")
     }
 }

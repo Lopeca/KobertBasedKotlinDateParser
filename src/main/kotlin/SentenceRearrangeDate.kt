@@ -3,11 +3,12 @@ import scheduleItem.ItemSchedule
 import scheduleItem.ItemSide
 import scheduleItem.ItemTime
 import tools.StringPositionRecorder
+import tools.TypeOfRegex
 
 fun main(){
     // 정규표현식
     val ymd = Regex("\\D*(\\d*[\\./년\\s])?\\s?(\\d*[\\./월\\s])?\\s?(\\d+)[^-~]?")
-    val extNum = Regex("\\D")
+
 
     // 지금 커밋한 데이터는 ner_train_data(17)의 문장입니다
     // 아래 taggedWords가 완성된 시점까지는 학습해서 데이터 받아올 때 필요 없을 수 있는 코드
@@ -31,63 +32,32 @@ fun main(){
     println(taggedWords)
 
     // 여기까지 인공지능 받을 때 달라질 코드
-    // 1. DT 태그가 연속해서 출현하면 붙여서 저장
+
+
+    // 1. DT 태그가 연속해서 출현하면 붙여서 저장. StringPositionRecorder 리스트 사용
     println("---------------1단계--------------")
-    val dtCollector:MutableList<StringPositionRecorder> = mutableListOf()
-    var temp:StringPositionRecorder? = null
-    for ((index, item) in taggedWords.withIndex()) {
-        val currentTag = item.tag
-        if (!isTagDT(currentTag)) {
-            if(temp!=null) {
-                temp.endIndex = index-1
-                dtCollector.add(temp)
-                temp = null
-            }
-            continue
-        }
-        else {
-            if(temp == null) temp = StringPositionRecorder(startIndex = index)
-            temp.str.append(item.word)
-        }
-    }
+    val rangedWordBox:MutableList<StringPositionRecorder> = packUpWords(taggedWords)
 
-    println(dtCollector)
 
-    // 2. DT 처리 결과를 ItemDate에 넘겨줌(텍스트가 출현한 인덱스는 아직 고려하지 않았음)
+    // 2. DT 태그를 연결시켜 재정리한 결과물인 StringPositionRecorder를 정규표현식으로 분석해서 ItemDate에 넘겨줌
     println("---------------2단계--------------")
     val itemDateList:MutableList<ItemDate> = mutableListOf()
     val itemTimeList:MutableList<ItemTime> = mutableListOf()
-    for(i in dtCollector){
+    for(i in rangedWordBox){
         println("i : $i")
-        var resultRegex = ymd.find(i.str)
-
-        while(resultRegex != null) {
-            val itemDate = ItemDate()
-
-            var (num1, num2, num3) = resultRegex.destructured
-            num1 = num1.replace(extNum, "")
-            num2 = num2.replace(extNum, "")
-            num3 = num3.replace(extNum, "")
-            println("num1 = $num1, num2 = $num2, num3 = $num3")
-            itemDate.day = num3.toInt()
-
-            if (num1 != "" && num2 == "") itemDate.month = num1.toInt()
-            else itemDate.month = num2.toIntOrNull()
-
-            if (num1 != "" && num2 != "") itemDate.year = num1.toIntOrNull()
-
-            if(i.endIndex !=null) itemDate.range = i.startIndex..i.endIndex!!
-            else itemDate.range = i.startIndex..i.startIndex
-            println(itemDate)
+        // 정규표현식 적용하는 부분
+        var resultRegexDate = ymd.find(i.str)
+        while(resultRegexDate != null) {
+            val itemDate:ItemDate = parseDateByRegex(i, resultRegexDate)
             itemDateList.add(itemDate)
-            resultRegex = resultRegex.next()
+            resultRegexDate = resultRegexDate.next()
         }
     }
 
     // 일정과 시간 모두 모였다고 가정하고 어떻게 처리할지?
     // 3. 일정 사이드부터 수집. dt리스트는 itemDateList, ti리스트는 itemTimeList
     println("---------------3단계--------------")
-    itemTimeList.add(randomItemTimeSingle)
+    itemTimeList.add(randomItemTimeSingle)  // 처리할 시간이 있다고 임의로 만들어서 가정
 
     val itemSideList:MutableList<ItemSide> = mutableListOf()
 
@@ -95,6 +65,7 @@ fun main(){
     for(dateItem in itemDateList){
         val sideItem = ItemSide(dateItem,range=dateItem.range!!)
         for(timeItem in itemTimeList){
+            // 인식된 시간일정의 멀지 않은 앞쪽에 인식된 날짜일정이 있으면 년월일-시/분 연결된 하나의 일정으로 취급
             if(timeItem.range!!.first - dateItem.range!!.last in 1..2) {
                 sideItem.itemTime = timeItem
                 sideItem.range = dateItem.range!!.first..timeItem.range!!.last
@@ -105,7 +76,7 @@ fun main(){
         itemSideList.add(sideItem)
     }
 
-    //들어가지 못한 시간은 별도의 일정일 가능성이 있음
+    //들어가지 못한 시간은 시간만 인식된 독립된 일정으로 처리.
     for(timeItem in itemTimeList){
         if(!timeItem.inserted) {
             itemSideList.add(ItemSide(null,timeItem,timeItem.range!!))
@@ -114,7 +85,7 @@ fun main(){
 
     println(itemSideList)
 
-    // 4. itemSideList에서 시작과 종료 날짜로 관련됐는지, 각기 다른 일정인지 인덱스 범위로 분석해서 일정 아이템화
+    // 4. itemSideList에서 ItemSide끼리 시작과 종료 날짜로 관련됐는지, 각기 무관한 일정인지 출신 인덱스 범위로 분석해서 일정 아이템화(작업중)
     val scheduleList:MutableList<ItemSchedule> = mutableListOf()
     var tempSchedule:ItemSchedule? = null
     var prevRangeEnd = 0
@@ -126,6 +97,53 @@ fun main(){
         prevRangeEnd = item.range.last
 
     }
+}
+
+fun parseDateByRegex(i:StringPositionRecorder, resultRegexDate: MatchResult): ItemDate {
+    // 날짜 정보가 들어있으면 ItemDate로 가공
+    val itemDate = ItemDate()
+    var (num1, num2, num3) = resultRegexDate.destructured
+    num1 = num1.replace(TypeOfRegex.extNum, "")
+    num2 = num2.replace(TypeOfRegex.extNum, "")
+    num3 = num3.replace(TypeOfRegex.extNum, "")
+    println("num1 = $num1, num2 = $num2, num3 = $num3")
+
+    // num3부터 일.월.년 순으로 취급함
+    itemDate.day = num3.toInt()
+
+    if (num1 != "" && num2 == "") itemDate.month = num1.toInt()
+    else itemDate.month = num2.toIntOrNull()
+
+    if (num1 != "" && num2 != "") itemDate.year = num1.toIntOrNull()
+
+    // 이 일정이 추출된 단어의 원본에서의 구간 저장
+    if(i.endIndex !=null) itemDate.range = i.startIndex..i.endIndex!!
+    else itemDate.range = i.startIndex..i.startIndex
+    println(itemDate)
+
+    return itemDate
+}
+
+fun packUpWords(taggedWords: MutableList<TaggedWord>): MutableList<StringPositionRecorder> {
+    val wordPacks:MutableList<StringPositionRecorder> = mutableListOf()
+    var temp:StringPositionRecorder? = null
+    for ((index, item) in taggedWords.withIndex()) {
+        val currentTag = item.tag
+        if (!isTagDT(currentTag)) {
+            if(temp!=null) {
+                temp.endIndex = index-1
+                wordPacks.add(temp)
+                temp = null
+            }
+            continue
+        }
+        else {
+            if(temp == null) temp = StringPositionRecorder(startIndex = index)
+            temp.str.append(item.word)
+        }
+    }
+    println(wordPacks)
+    return(wordPacks)
 }
 
 fun convertTagStringToInt(s: String): Int {

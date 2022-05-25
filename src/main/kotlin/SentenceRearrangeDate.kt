@@ -1,11 +1,34 @@
-import scheduleItem.ItemDate
-import scheduleItem.ItemSchedule
-import scheduleItem.ItemSide
-import scheduleItem.ItemTime
+import com.google.gson.GsonBuilder
+import scheduleItem.*
+import tools.DateForm
 import tools.StringPositionRecorder
 import tools.TypeOfRegex
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun main(){
+    val gson = GsonBuilder().setLenient().create()
+    val path = "src\\main\\resources\\parseTarget.txt"
+
+    val file = File(path)
+    val inputStream = file.inputStream()
+    val gsonText = inputStream.bufferedReader().use{it.readText()}
+
+    var responseBody: MutableMap<*, *>? = null
+
+    responseBody = gson.fromJson(gsonText, MutableMap::class.java)
+    println(responseBody)
+
+    var returnObject: Map<String?, Any?>
+    var sentences: List<Map<*, *>?>
+
+    returnObject = responseBody["return_object"] as Map<String?, Any?>
+    sentences = (returnObject["sentence"] as List<Map<*, *>?>?)!!
+
+    println(returnObject)
+    println(sentences)
+
     // 정규표현식
     val ymd = Regex("\\D*(\\d*[\\./년\\s])?\\s?(\\d*[\\./월\\s])?\\s?(\\d+)[^-~]?")
 
@@ -88,15 +111,125 @@ fun main(){
     // 4. itemSideList에서 ItemSide끼리 시작과 종료 날짜로 관련됐는지, 각기 무관한 일정인지 출신 인덱스 범위로 분석해서 일정 아이템화(작업중)
     val scheduleList:MutableList<ItemSchedule> = mutableListOf()
     var tempSchedule:ItemSchedule? = null
+    var prevRangeStart = 0
     var prevRangeEnd = 0
     for(item in itemSideList){
         if(tempSchedule == null){
             tempSchedule = ItemSchedule(item, null, item.range)
         }
-
+        else{
+            if(item.range.first - prevRangeEnd <2 && item.range.first >= prevRangeStart){
+                tempSchedule.to = item
+                tempSchedule.range = tempSchedule.range.first..item.range.last
+                scheduleList.add(tempSchedule)
+                tempSchedule = null
+            }
+            else{
+                scheduleList.add(tempSchedule)
+                tempSchedule = ItemSchedule(item, null, item.range)
+            }
+        }
+        prevRangeStart = item.range.first
         prevRangeEnd = item.range.last
-
     }
+    if(tempSchedule!=null) scheduleList.add(tempSchedule)
+    println(scheduleList)
+
+    val eventList:MutableList<EventsVO> = convertListScheduleToEvent(scheduleList)
+
+    println("----------------------------event----------------------------")
+    for(event in eventList){
+        val from = Date(event.dtStart)
+        var to:Date = if(event.dtEnd != null) Date(event.dtEnd!!)
+        else Date(event.dtStart+60000*60)
+
+        val fromP = DateForm.integratedForm.format(from)
+        val toP = DateForm.integratedForm.format(to)
+        println("$fromP ~ $toP")
+    }
+}
+
+fun fillNullDefaultItemSchedule(itemSch: ItemSchedule) {
+    fillNullDefaultItemSide(itemSch.from)
+    if(itemSch.to != null) {
+        if(itemSch.to!!.itemDate == null) itemSch.to!!.itemDate = itemSch.from.itemDate!!.copy()
+        else {
+            if(itemSch.to!!.itemDate!!.year == null) itemSch.to!!.itemDate!!.year = itemSch.from.itemDate!!.year
+            if(itemSch.to!!.itemDate!!.month == null) itemSch.to!!.itemDate!!.year = itemSch.from.itemDate!!.month
+        }
+
+        if(itemSch.to!!.itemTime == null) fillNullDefaultItemTime(itemSch.to!!.itemTime)
+    }
+
+}
+
+fun fillNullDefaultItemSide(side: ItemSide) {
+    side.itemDate = fillNullDefaultItemDate(side.itemDate)
+    side.itemTime = fillNullDefaultItemTime(side.itemTime)
+}
+
+fun fillNullDefaultItemTime(itemTime: ItemTime?): ItemTime? {
+    var finishedTime = itemTime
+    if(finishedTime == null){
+        finishedTime = ItemTime(9, 0)
+    }
+    else{
+        if(finishedTime.minute == null) finishedTime.minute = 0
+    }
+    return finishedTime
+}
+
+fun fillNullDefaultItemDate(itemDate: ItemDate?): ItemDate? {
+    val cal = Calendar.getInstance()
+    val curYear = cal.get(Calendar.YEAR)
+    val curMonth = cal.get(Calendar.MONTH)
+    val curDay = cal.get(Calendar.DAY_OF_MONTH)
+
+    var finishedDate = itemDate
+    if(finishedDate == null){
+        finishedDate = ItemDate(curYear, curMonth, curDay)
+    }
+    else{
+        if(finishedDate.year == null) finishedDate.year = curYear
+        if(finishedDate.month == null)finishedDate.month = curMonth
+        if(finishedDate.day == null) finishedDate.day = curDay
+    }
+
+    return finishedDate
+}
+
+fun convertSideToMillis(side: ItemSide): Long {
+    val cal = Calendar.getInstance()
+
+    println("여기 확인 : $side")
+    val year = side.itemDate!!.year!!
+    val month = side.itemDate!!.month!!
+    val day = side.itemDate!!.day!!
+    if(side.itemTime != null) {
+        val hour = side.itemTime!!.hour!!
+        val minute = side.itemTime!!.minute!!
+
+        println("::$year, $month,$day,$hour,$minute")
+        cal.set(year, month, day, hour, minute)
+    }
+    else
+        cal.set(year,month,day)
+    return cal.timeInMillis
+}
+
+fun convertListScheduleToEvent(scheduleList: MutableList<ItemSchedule>): MutableList<EventsVO> {
+    val eventList:MutableList<EventsVO> = mutableListOf()
+
+    for(itemSch in scheduleList){
+        fillNullDefaultItemSchedule(itemSch)
+
+        val fromMillis = convertSideToMillis(itemSch.from)
+        var toMillis:Long = if (itemSch.to == null) fromMillis+60000*60 else convertSideToMillis(itemSch.to!!)
+        val eventTemp = EventsVO(0,1,null,"회의",null,null, 1,1,fromMillis,toMillis,"Asia/Seoul",null,null,null,null,null,null,null)
+        eventList.add(eventTemp)
+    }
+
+    return eventList
 }
 
 fun parseDateByRegex(i:StringPositionRecorder, resultRegexDate: MatchResult): ItemDate {

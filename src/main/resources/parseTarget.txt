@@ -1,0 +1,1158 @@
+{
+request_id: "reserved field",
+result: 0,
+return_type: "com.google.gson.internal.LinkedTreeMap",
+return_object: {
+doc_id: "",
+DCT: "",
+category: "",
+category_weight: 0,
+title: {
+text: "",
+NE: ""
+},
+metaInfo: {},
+paragraphInfo: [],
+sentence: [
+{
+id: 0,
+reserve_str: "",
+text: "건축가 &lt;건축가 명사특강&gt 2019.8.27 -9.24 어디서 살 것인가 9.3 180* 매주 (화) 16:00 - 18:00 세종시청 4층 여민실 정태인 |",
+morp: [
+{
+id: 0,
+lemma: "건축",
+type: "NNG",
+position: 0,
+weight: 0.101651
+},
+{
+id: 1,
+lemma: "가",
+type: "XSN",
+position: 6,
+weight: 0.101651
+},
+{
+id: 2,
+lemma: "&",
+type: "SW",
+position: 10,
+weight: 1
+},
+{
+id: 3,
+lemma: "lt",
+type: "SL",
+position: 11,
+weight: 1
+},
+{
+id: 4,
+lemma: ";",
+type: "SW",
+position: 13,
+weight: 1
+},
+{
+id: 5,
+lemma: "건축",
+type: "NNG",
+position: 14,
+weight: 0.0519544
+},
+{
+id: 6,
+lemma: "가",
+type: "XSN",
+position: 20,
+weight: 0.0519544
+},
+{
+id: 7,
+lemma: "명사",
+type: "NNG",
+position: 24,
+weight: 0.136722
+},
+{
+id: 8,
+lemma: "특강",
+type: "NNG",
+position: 30,
+weight: 0.0446165
+},
+{
+id: 9,
+lemma: "&",
+type: "SW",
+position: 36,
+weight: 1
+},
+{
+id: 10,
+lemma: "gt",
+type: "SL",
+position: 37,
+weight: 1
+},
+{
+id: 11,
+lemma: "2019.8.27",
+type: "SN",
+position: 40,
+weight: 1
+},
+{
+id: 12,
+lemma: "-",
+type: "SS",
+position: 50,
+weight: 1
+},
+{
+id: 13,
+lemma: "9.24",
+type: "SN",
+position: 51,
+weight: 1
+},
+{
+id: 14,
+lemma: "어디",
+type: "NP",
+position: 56,
+weight: 0.0921991
+},
+{
+id: 15,
+lemma: "서",
+type: "JKB",
+position: 62,
+weight: 0.0807961
+},
+{
+id: 16,
+lemma: "살",
+type: "VV",
+position: 66,
+weight: 0.119163
+},
+{
+id: 17,
+lemma: "ㄹ",
+type: "ETM",
+position: 66,
+weight: 0.119163
+},
+{
+id: 18,
+lemma: "것",
+type: "NNB",
+position: 70,
+weight: 0.200851
+},
+{
+id: 19,
+lemma: "이",
+type: "VCP",
+position: 73,
+weight: 0.141795
+},
+{
+id: 20,
+lemma: "ㄴ가",
+type: "EF",
+position: 73,
+weight: 0.118727
+},
+{
+id: 21,
+lemma: "9.3",
+type: "SN",
+position: 80,
+weight: 1
+},
+{
+id: 22,
+lemma: "180",
+type: "SN",
+position: 84,
+weight: 1
+},
+{
+id: 23,
+lemma: "*",
+type: "SW",
+position: 87,
+weight: 1
+},
+{
+id: 24,
+lemma: "매주",
+type: "MAG",
+position: 89,
+weight: 0.122817
+},
+{
+id: 25,
+lemma: "(",
+type: "SS",
+position: 96,
+weight: 1
+},
+{
+id: 26,
+lemma: "화",
+type: "NNG",
+position: 97,
+weight: 0.0546109
+},
+{
+id: 27,
+lemma: ")",
+type: "SS",
+position: 100,
+weight: 1
+},
+{
+id: 28,
+lemma: "16",
+type: "SN",
+position: 102,
+weight: 1
+},
+{
+id: 29,
+lemma: ":",
+type: "SP",
+position: 104,
+weight: 1
+},
+{
+id: 30,
+lemma: "00",
+type: "SN",
+position: 105,
+weight: 1
+},
+{
+id: 31,
+lemma: "-",
+type: "SS",
+position: 108,
+weight: 1
+},
+{
+id: 32,
+lemma: "18",
+type: "SN",
+position: 110,
+weight: 1
+},
+{
+id: 33,
+lemma: ":",
+type: "SP",
+position: 112,
+weight: 1
+},
+{
+id: 34,
+lemma: "00",
+type: "SN",
+position: 113,
+weight: 1
+},
+{
+id: 35,
+lemma: "세종시청",
+type: "NNP",
+position: 116,
+weight: 0.073178
+},
+{
+id: 36,
+lemma: "4",
+type: "SN",
+position: 129,
+weight: 1
+},
+{
+id: 37,
+lemma: "층",
+type: "NNG",
+position: 130,
+weight: 0.0876541
+},
+{
+id: 38,
+lemma: "여민실",
+type: "NNP",
+position: 134,
+weight: 0.0159883
+},
+{
+id: 39,
+lemma: "정태인",
+type: "NNP",
+position: 144,
+weight: 0.0476889
+},
+{
+id: 40,
+lemma: "|",
+type: "SW",
+position: 154,
+weight: 1
+}
+],
+WSD: [
+{
+id: 0,
+text: "건축가",
+type: "NNG",
+scode: "00",
+weight: 0,
+position: 0,
+begin: 0,
+end: 1
+},
+{
+id: 1,
+text: "&",
+type: "SW",
+scode: "00",
+weight: 1,
+position: 10,
+begin: 2,
+end: 2
+},
+{
+id: 2,
+text: "lt",
+type: "SL",
+scode: "00",
+weight: 1,
+position: 11,
+begin: 3,
+end: 3
+},
+{
+id: 3,
+text: ";",
+type: "SW",
+scode: "00",
+weight: 1,
+position: 13,
+begin: 4,
+end: 4
+},
+{
+id: 4,
+text: "건축가",
+type: "NNG",
+scode: "00",
+weight: 0,
+position: 14,
+begin: 5,
+end: 6
+},
+{
+id: 5,
+text: "명사",
+type: "NNG",
+scode: "03",
+weight: 1,
+position: 24,
+begin: 7,
+end: 7
+},
+{
+id: 6,
+text: "특강",
+type: "NNG",
+scode: "00",
+weight: 0,
+position: 30,
+begin: 8,
+end: 8
+},
+{
+id: 7,
+text: "&",
+type: "SW",
+scode: "00",
+weight: 1,
+position: 36,
+begin: 9,
+end: 9
+},
+{
+id: 8,
+text: "gt",
+type: "SL",
+scode: "00",
+weight: 1,
+position: 37,
+begin: 10,
+end: 10
+},
+{
+id: 9,
+text: "2019.8.27",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 40,
+begin: 11,
+end: 11
+},
+{
+id: 10,
+text: "-",
+type: "SS",
+scode: "00",
+weight: 1,
+position: 50,
+begin: 12,
+end: 12
+},
+{
+id: 11,
+text: "9.24",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 51,
+begin: 13,
+end: 13
+},
+{
+id: 12,
+text: "어디",
+type: "NP",
+scode: "01",
+weight: 2.2,
+position: 56,
+begin: 14,
+end: 14
+},
+{
+id: 13,
+text: "서",
+type: "JKB",
+scode: "00",
+weight: 1,
+position: 62,
+begin: 15,
+end: 15
+},
+{
+id: 14,
+text: "살",
+type: "VV",
+scode: "01",
+weight: 1,
+position: 66,
+begin: 16,
+end: 16
+},
+{
+id: 15,
+text: "ㄹ",
+type: "ETM",
+scode: "00",
+weight: 1,
+position: 66,
+begin: 17,
+end: 17
+},
+{
+id: 16,
+text: "것",
+type: "NNB",
+scode: "01",
+weight: 2.2,
+position: 70,
+begin: 18,
+end: 18
+},
+{
+id: 17,
+text: "이",
+type: "VCP",
+scode: "01",
+weight: 1,
+position: 73,
+begin: 19,
+end: 19
+},
+{
+id: 18,
+text: "ㄴ가",
+type: "EF",
+scode: "00",
+weight: 1,
+position: 73,
+begin: 20,
+end: 20
+},
+{
+id: 19,
+text: "9.3",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 80,
+begin: 21,
+end: 21
+},
+{
+id: 20,
+text: "180",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 84,
+begin: 22,
+end: 22
+},
+{
+id: 21,
+text: "*",
+type: "SW",
+scode: "00",
+weight: 1,
+position: 87,
+begin: 23,
+end: 23
+},
+{
+id: 22,
+text: "매주",
+type: "MAG",
+scode: "01",
+weight: 1,
+position: 89,
+begin: 24,
+end: 24
+},
+{
+id: 23,
+text: "(",
+type: "SS",
+scode: "00",
+weight: 1,
+position: 96,
+begin: 25,
+end: 25
+},
+{
+id: 24,
+text: "화",
+type: "NNG",
+scode: "07",
+weight: 1,
+position: 97,
+begin: 26,
+end: 26
+},
+{
+id: 25,
+text: ")",
+type: "SS",
+scode: "00",
+weight: 1,
+position: 100,
+begin: 27,
+end: 27
+},
+{
+id: 26,
+text: "16",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 102,
+begin: 28,
+end: 28
+},
+{
+id: 27,
+text: ":",
+type: "SP",
+scode: "00",
+weight: 1,
+position: 104,
+begin: 29,
+end: 29
+},
+{
+id: 28,
+text: "00",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 105,
+begin: 30,
+end: 30
+},
+{
+id: 29,
+text: "-",
+type: "SS",
+scode: "00",
+weight: 1,
+position: 108,
+begin: 31,
+end: 31
+},
+{
+id: 30,
+text: "18",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 110,
+begin: 32,
+end: 32
+},
+{
+id: 31,
+text: ":",
+type: "SP",
+scode: "00",
+weight: 1,
+position: 112,
+begin: 33,
+end: 33
+},
+{
+id: 32,
+text: "00",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 113,
+begin: 34,
+end: 34
+},
+{
+id: 33,
+text: "세종시청",
+type: "NNP",
+scode: "00",
+weight: 0,
+position: 116,
+begin: 35,
+end: 35
+},
+{
+id: 34,
+text: "4",
+type: "SN",
+scode: "00",
+weight: 1,
+position: 129,
+begin: 36,
+end: 36
+},
+{
+id: 35,
+text: "층",
+type: "NNG",
+scode: "02",
+weight: 1,
+position: 130,
+begin: 37,
+end: 37
+},
+{
+id: 36,
+text: "여민실",
+type: "NNP",
+scode: "00",
+weight: 0,
+position: 134,
+begin: 38,
+end: 38
+},
+{
+id: 37,
+text: "정태인",
+type: "NNP",
+scode: "00",
+weight: 0,
+position: 144,
+begin: 39,
+end: 39
+},
+{
+id: 38,
+text: "|",
+type: "SW",
+scode: "00",
+weight: 1,
+position: 154,
+begin: 40,
+end: 40
+}
+],
+word: [
+{
+id: 0,
+text: "건축가",
+type: "",
+begin: 0,
+end: 1
+},
+{
+id: 1,
+text: "&lt;건축가",
+type: "",
+begin: 2,
+end: 6
+},
+{
+id: 2,
+text: "명사특강&gt",
+type: "",
+begin: 7,
+end: 10
+},
+{
+id: 3,
+text: "2019.8.27",
+type: "",
+begin: 11,
+end: 11
+},
+{
+id: 4,
+text: "-9.24",
+type: "",
+begin: 12,
+end: 13
+},
+{
+id: 5,
+text: "어디서",
+type: "",
+begin: 14,
+end: 15
+},
+{
+id: 6,
+text: "살",
+type: "",
+begin: 16,
+end: 17
+},
+{
+id: 7,
+text: "것인가",
+type: "",
+begin: 18,
+end: 20
+},
+{
+id: 8,
+text: "9.3",
+type: "",
+begin: 21,
+end: 21
+},
+{
+id: 9,
+text: "180*",
+type: "",
+begin: 22,
+end: 23
+},
+{
+id: 10,
+text: "매주",
+type: "",
+begin: 24,
+end: 24
+},
+{
+id: 11,
+text: "(화)",
+type: "",
+begin: 25,
+end: 27
+},
+{
+id: 12,
+text: "16:00",
+type: "",
+begin: 28,
+end: 30
+},
+{
+id: 13,
+text: "-",
+type: "",
+begin: 31,
+end: 31
+},
+{
+id: 14,
+text: "18:00",
+type: "",
+begin: 32,
+end: 34
+},
+{
+id: 15,
+text: "세종시청",
+type: "",
+begin: 35,
+end: 35
+},
+{
+id: 16,
+text: "4층",
+type: "",
+begin: 36,
+end: 37
+},
+{
+id: 17,
+text: "여민실",
+type: "",
+begin: 38,
+end: 38
+},
+{
+id: 18,
+text: "정태인",
+type: "",
+begin: 39,
+end: 39
+},
+{
+id: 19,
+text: "|",
+type: "",
+begin: 40,
+end: 40
+}
+],
+NE: [
+{
+id: 0,
+text: "건축가",
+type: "CV_OCCUPATION",
+begin: 0,
+end: 1,
+weight: 0.465397,
+common_noun: 0
+},
+{
+id: 1,
+text: "건축가",
+type: "CV_OCCUPATION",
+begin: 5,
+end: 6,
+weight: 0.290026,
+common_noun: 0
+},
+{
+id: 2,
+text: "명사특강",
+type: "PS_NAME",
+begin: 7,
+end: 8,
+weight: 0.115016,
+common_noun: 0
+},
+{
+id: 3,
+text: "2019.8.27 -9.24",
+type: "DT_DURATION",
+begin: 11,
+end: 13,
+weight: 0.243216,
+common_noun: 0
+},
+{
+id: 4,
+text: "9.3 180*",
+type: "QT_OTHERS",
+begin: 21,
+end: 23,
+weight: 0.365619,
+common_noun: 0
+},
+{
+id: 5,
+text: "매주 (화)",
+type: "DT_OTHERS",
+begin: 24,
+end: 27,
+weight: 0.200763,
+common_noun: 0
+},
+{
+id: 6,
+text: "16:00",
+type: "TI_HOUR",
+begin: 28,
+end: 30,
+weight: 0.731003,
+common_noun: 0
+},
+{
+id: 7,
+text: "18:00",
+type: "TI_HOUR",
+begin: 32,
+end: 34,
+weight: 0.563197,
+common_noun: 0
+},
+{
+id: 8,
+text: "세종시청",
+type: "OGG_ART",
+begin: 35,
+end: 35,
+weight: 0.225492,
+common_noun: 0
+},
+{
+id: 9,
+text: "4층",
+type: "QT_ORDER",
+begin: 36,
+end: 37,
+weight: 0.509475,
+common_noun: 0
+},
+{
+id: 10,
+text: "정태인",
+type: "PS_NAME",
+begin: 39,
+end: 39,
+weight: 0.155946,
+common_noun: 0
+}
+],
+NE_Link: [],
+dependency: [
+{
+id: 0,
+text: "건축가",
+head: 2,
+label: "NP",
+mod: [],
+weight: 0.392291
+},
+{
+id: 1,
+text: "&lt;건축가",
+head: 2,
+label: "NP",
+mod: [],
+weight: 0.371429
+},
+{
+id: 2,
+text: "명사특강&gt",
+head: 19,
+label: "NP",
+mod: [
+0,
+1
+],
+weight: 0.220583
+},
+{
+id: 3,
+text: "2019.8.27",
+head: 4,
+label: "NP",
+mod: [],
+weight: 0.209949
+},
+{
+id: 4,
+text: "-9.24",
+head: 6,
+label: "NP",
+mod: [
+3
+],
+weight: 0.295538
+},
+{
+id: 5,
+text: "어디서",
+head: 6,
+label: "NP_AJT",
+mod: [],
+weight: 0.585615
+},
+{
+id: 6,
+text: "살",
+head: 7,
+label: "VP_MOD",
+mod: [
+4,
+5
+],
+weight: 0.541681
+},
+{
+id: 7,
+text: "것인가",
+head: 19,
+label: "VNP",
+mod: [
+6
+],
+weight: 0.700871
+},
+{
+id: 8,
+text: "9.3",
+head: 9,
+label: "NP",
+mod: [],
+weight: 0.067735
+},
+{
+id: 9,
+text: "180*",
+head: 19,
+label: "X",
+mod: [
+8
+],
+weight: 0.0692508
+},
+{
+id: 10,
+text: "매주",
+head: 11,
+label: "AP",
+mod: [],
+weight: 0.105142
+},
+{
+id: 11,
+text: "(화)",
+head: 12,
+label: "NP",
+mod: [
+10
+],
+weight: 0.0112396
+},
+{
+id: 12,
+text: "16:00",
+head: 13,
+label: "NP",
+mod: [
+11
+],
+weight: 0.073039
+},
+{
+id: 13,
+text: "-",
+head: 19,
+label: "X",
+mod: [
+12
+],
+weight: 0.379195
+},
+{
+id: 14,
+text: "18:00",
+head: 19,
+label: "NP",
+mod: [],
+weight: 0.0773239
+},
+{
+id: 15,
+text: "세종시청",
+head: 16,
+label: "NP",
+mod: [],
+weight: 0.572668
+},
+{
+id: 16,
+text: "4층",
+head: 19,
+label: "NP",
+mod: [
+15
+],
+weight: 0.5453
+},
+{
+id: 17,
+text: "여민실",
+head: 18,
+label: "NP",
+mod: [],
+weight: 0.509413
+},
+{
+id: 18,
+text: "정태인",
+head: 19,
+label: "NP",
+mod: [
+17
+],
+weight: 0.546043
+},
+{
+id: 19,
+text: "|",
+head: -1,
+label: "NP",
+mod: [
+2,
+7,
+9,
+13,
+14,
+16,
+18
+],
+weight: 2.08349e-13
+}
+],
+SRL: [
+{
+verb: "살",
+sense: 1,
+word_id: 6,
+weight: 0.165739,
+argument: [
+{
+type: "ARG2",
+word_id: 5,
+text: "어디",
+weight: 0.09902
+}
+]
+}
+]
+}
+],
+entity: []
+}
+}

@@ -35,8 +35,11 @@ fun main(){
 
     // 지금 커밋한 데이터는 ner_train_data(17)의 문장입니다
     // 아래 taggedWords가 완성된 시점까지는 학습해서 데이터 받아올 때 필요 없을 수 있는 코드
-    val originalSentence = "건축가 <건축가 명사특강> 2019.8.27 -9.24 어디서 살 것인가 9.3 180* 매주 (화) 16:00 - 18:00 세종시청 4층 여민실 정태인 |"
-    val originalTag = "O O O DT_OTHERS DT_OTHERS O O O DT_OTHERS O DT_OTHERS DT_OTHERS TL_OTHERS O TL_OTHERS O O O O O"
+//    val originalSentence = "내일 건축가 <건축가 명사특강> 2019.8.27 -9.24 어디서 살 것인가 9.3 180* 매주 (화) 16:00 - 18:00 세종시청 4층 여민실 정태인 |"
+//    val originalTag = "DT_OTHERS O O O DT_OTHERS DT_OTHERS O O O DT_OTHERS O DT_OTHERS DT_OTHERS TL_OTHERS O TL_OTHERS O O O O O"
+
+    val originalSentence = "2019 내일 건축가 <건축가 명사특강> 2019.8.27 -9.24 어디서 살 것인가 9.3 180* 매주 (화) 16:00 - 18:00 세종시청 4층 여민실 정태인 |"
+    val originalTag = "DT_YEAR DT_OTHERS O O O DT_OTHERS DT_OTHERS O O O DT_OTHERS O DT_OTHERS DT_OTHERS TL_OTHERS O TL_OTHERS O O O O O"
 
     val randomItemTimeSingle = ItemTime(16,0,13..13)
 
@@ -66,15 +69,32 @@ fun main(){
     println("---------------2단계--------------")
     val itemDateList:MutableList<ItemDate> = mutableListOf()
     val itemTimeList:MutableList<ItemTime> = mutableListOf()
+    val cal = Calendar.getInstance()
+    val today = cal.get(Calendar.DAY_OF_MONTH)
     for(i in rangedWordBox){
-        println("i : $i")
-        // 정규표현식 적용하는 부분
-        var resultRegexDate = ymd.find(i.str)
-        while(resultRegexDate != null) {
-            val itemDate:ItemDate = parseDateByRegex(i, resultRegexDate)
-            itemDateList.add(itemDate)
-            resultRegexDate = resultRegexDate.next()
-        }
+            println("i : $i")
+            // 정규표현식 적용하는 부분
+            var resultRegexDate = ymd.find(i.str)
+            if(resultRegexDate != null) {
+                while (resultRegexDate != null) {
+                    val itemDate: ItemDate? = parseDateByRegex(i, resultRegexDate)
+                    if(itemDate != null) itemDateList.add(itemDate)
+                    resultRegexDate = resultRegexDate.next()
+                }
+            }
+            else{
+                var thisRange = if(i.endIndex != null) i.startIndex..i.endIndex!! else i.startIndex..i.startIndex
+                var result = Regex("내일").find(i.str)
+                if(result != null) itemDateList.add(ItemDate(null,null,today+1,thisRange))
+                else {
+                    result = Regex("모레").find(i.str)
+                    if(result != null) itemDateList.add(ItemDate(null,null,today+2,thisRange))
+                    else {
+                        result = Regex("어제").find(i.str)
+                        if(result != null) itemDateList.add(ItemDate(null,null,today-1,thisRange))
+                    }
+                }
+            }
     }
 
     // 일정과 시간 모두 모였다고 가정하고 어떻게 처리할지?
@@ -143,8 +163,8 @@ fun main(){
         var to:Date = if(event.dtEnd != null) Date(event.dtEnd!!)
         else Date(event.dtStart+60000*60)
 
-        val fromP = DateForm.integratedForm.format(from)
-        val toP = DateForm.integratedForm.format(to)
+        val fromP = DateForm.integratedForm.format(event.dtStart)
+        val toP = DateForm.integratedForm.format(event.dtEnd!!)
         println("$fromP ~ $toP")
     }
 }
@@ -152,10 +172,11 @@ fun main(){
 fun fillNullDefaultItemSchedule(itemSch: ItemSchedule) {
     fillNullDefaultItemSide(itemSch.from)
     if(itemSch.to != null) {
+        println("asdf : $itemSch.to")
         if(itemSch.to!!.itemDate == null) itemSch.to!!.itemDate = itemSch.from.itemDate!!.copy()
         else {
             if(itemSch.to!!.itemDate!!.year == null) itemSch.to!!.itemDate!!.year = itemSch.from.itemDate!!.year
-            if(itemSch.to!!.itemDate!!.month == null) itemSch.to!!.itemDate!!.year = itemSch.from.itemDate!!.month
+            if(itemSch.to!!.itemDate!!.month == null) itemSch.to!!.itemDate!!.month = itemSch.from.itemDate!!.month
         }
 
         if(itemSch.to!!.itemTime == null) fillNullDefaultItemTime(itemSch.to!!.itemTime)
@@ -182,7 +203,7 @@ fun fillNullDefaultItemTime(itemTime: ItemTime?): ItemTime? {
 fun fillNullDefaultItemDate(itemDate: ItemDate?): ItemDate? {
     val cal = Calendar.getInstance()
     val curYear = cal.get(Calendar.YEAR)
-    val curMonth = cal.get(Calendar.MONTH)
+    val curMonth = cal.get(Calendar.MONTH)+1
     val curDay = cal.get(Calendar.DAY_OF_MONTH)
 
     var finishedDate = itemDate
@@ -203,7 +224,7 @@ fun convertSideToMillis(side: ItemSide): Long {
 
     println("여기 확인 : $side")
     val year = side.itemDate!!.year!!
-    val month = side.itemDate!!.month!!
+    val month = side.itemDate!!.month!!-1
     val day = side.itemDate!!.day!!
     if(side.itemTime != null) {
         val hour = side.itemTime!!.hour!!
@@ -213,7 +234,7 @@ fun convertSideToMillis(side: ItemSide): Long {
         cal.set(year, month, day, hour, minute)
     }
     else
-        cal.set(year,month,day)
+        cal.set(year,month,day, 9, 0)
     return cal.timeInMillis
 }
 
@@ -232,14 +253,23 @@ fun convertListScheduleToEvent(scheduleList: MutableList<ItemSchedule>): Mutable
     return eventList
 }
 
-fun parseDateByRegex(i:StringPositionRecorder, resultRegexDate: MatchResult): ItemDate {
+fun parseDateByRegex(i:StringPositionRecorder, resultRegexDate: MatchResult): ItemDate? {
     // 날짜 정보가 들어있으면 ItemDate로 가공
     val itemDate = ItemDate()
-    var (num1, num2, num3) = resultRegexDate.destructured
-    num1 = num1.replace(TypeOfRegex.extNum, "")
-    num2 = num2.replace(TypeOfRegex.extNum, "")
-    num3 = num3.replace(TypeOfRegex.extNum, "")
+    var (n1, n2, n3) = resultRegexDate.destructured
+    var num1 = n1.replace(TypeOfRegex.extNum, "")
+    var num2 = n2.replace(TypeOfRegex.extNum, "")
+    var num3 = n3.replace(TypeOfRegex.extNum, "")
     println("num1 = $num1, num2 = $num2, num3 = $num3")
+
+    // divider가 다르면 앞에것만 취함
+    if(num1.isNotEmpty() && num2.isNotEmpty()) {
+        if (n1[num1.length] != '년' && n1[num1.length] != n2[num2.length]) {
+            num3 = num2
+            num2 = num1
+            num1 = ""
+        }
+    }
 
     // num3부터 일.월.년 순으로 취급함
     itemDate.day = num3.toInt()
@@ -254,6 +284,12 @@ fun parseDateByRegex(i:StringPositionRecorder, resultRegexDate: MatchResult): It
     else itemDate.range = i.startIndex..i.startIndex
     println(itemDate)
 
+    if(num1!="") {
+        if (num1.toInt() < 2000 || num1.toInt()>2200)
+        return null
+    }
+    if(num2!="") if (num2.toInt() >12) return null
+    if(num3!="") if (num3.toInt() >31) return null
     return itemDate
 }
 

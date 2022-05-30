@@ -7,13 +7,15 @@ class Tags {
         const val DT_DAY = 3
         const val DT_OTHERS = 4
         const val DT_UNDEFINED = 5
-        const val DT_DURATION = 6
-        const val DT_DIVIDE = 7
+        const val DTI_RESERVATION = 6
+        const val DT_DURATION = 7
+        const val DT_DIVIDE = 8
 
         const val TI_HOUR = 11
         const val TI_MINUTE = 12
         const val TI_OTHERS = 13
         const val TI_DURATION = 14
+
 
         const val O = 0
 
